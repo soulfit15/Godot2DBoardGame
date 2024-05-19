@@ -1,0 +1,121 @@
+using Godot;
+using System.Threading.Tasks;
+
+	
+
+public partial class node_2d : Node2D
+{
+	[Signal]
+	public delegate void RngCustomEventHandler(int num, int num2);
+	private float sx;
+	private float sy;
+	private int rng1;
+	private int rng2;
+	private AnimatedSprite2D sprite;
+	private AnimatedSprite2D sprite2;
+
+	
+
+
+	private RandomNumberGenerator rng = new RandomNumberGenerator();
+	// Called when the node enters the scene tree for the first time.
+	public override void _Ready()
+	{
+		sprite = GetNode<AnimatedSprite2D>("dice");
+		sprite2 = GetNode<AnimatedSprite2D>("dice2");
+
+		
+	}
+	
+	public async Task wait()
+{
+    await ToSignal(GetTree().CreateTimer(0.1f), SceneTreeTimer.SignalName.Timeout);
+}
+	private async void _on_button_pressed() {
+	//	GD.Print("working");
+		var gameManager = GetNode<Global>("/root/Global");
+
+		for (int i = 0; i < 10; i++)
+		{
+			
+			await wait();
+			 rng1 = rng.RandiRange(1, 6);
+			 rng2 = rng.RandiRange(1, 6);
+			if (rng1 != 0){
+				//GD.Print(gameManager.num, " ", gameManager.num2);
+
+			} else {
+				GD.Print("problem here!");
+
+			}
+		 switch (rng1)
+		{
+			case 1:
+				sprite.Frame = 0;
+				break;
+			case 2:
+				sprite.Frame = 1;
+				break;
+            case 3:
+				sprite.Frame = 2;
+				break;
+			case 4:
+				sprite.Frame = 3;
+				break;
+			case 5:
+				sprite.Frame = 4;
+				break;
+			case 6:
+				
+				sprite.Frame = 5;
+				break;
+						
+		}
+		  switch (rng2)
+		{
+			case 1:
+				sprite2.Frame = 0;
+
+				break;
+			case 2:
+				sprite2.Frame = 1;
+				break;
+            case 3:
+				sprite2.Frame = 2;
+				break;
+			case 4:
+				sprite2.Frame = 3;
+				break;
+			case 5:
+				sprite2.Frame = 4;
+				break;
+			case 6:
+				sprite2.Frame = 5;
+				break;
+				
+				
+
+			
+		}
+		
+
+
+			
+		}
+			
+			gameManager.num = rng1;
+			gameManager.num2 = rng2;
+			rng1 = 0;
+			rng2 = 0;
+
+		
+				
+		
+	
+	}
+
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+	}
+}
